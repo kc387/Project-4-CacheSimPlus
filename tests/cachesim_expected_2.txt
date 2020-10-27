@@ -1,0 +1,11 @@
+store 0x1 miss
+load 0x0 hit 00deadbe
+
+===
+
+Memory statistics:
+
+Total read calls: 1
+Total write calls: 0
+Total bytes read: 8
+Total bytes written: 0

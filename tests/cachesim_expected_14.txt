@@ -1,0 +1,17 @@
+load 0x0 miss 00
+load 0x4 hit 00
+load 0x8 hit 00
+load 0xc hit 00
+load 0x10 hit 00
+load 0x14 hit 00
+load 0x18 hit 00
+load 0x1c hit 00
+
+===
+
+Memory statistics:
+
+Total read calls: 1
+Total write calls: 0
+Total bytes read: 32
+Total bytes written: 0
