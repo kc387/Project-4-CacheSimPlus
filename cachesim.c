@@ -39,7 +39,8 @@ int main (int argc, char* argv[]) {
 		}
         else {                              // Else store
             // Buffer to store data to be stored
-            char data_buffer[16];
+            //char data_buffer[16];
+			char data_buffer[16];
 
             // Read the data
             fscanf(myFile, "%s", &data_buffer);
