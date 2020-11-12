@@ -14,6 +14,17 @@ int l2(int n) {
     return r; 
 }
 
+int x_to_the_n (int x,int n)
+{
+    int i; /* Variable used in loop counter */
+    int number = 1;
+
+    for (i = 0; i < n; ++i)
+        number *= x;
+
+    return(number);
+}
+
 int main(int argc, char* argv[]){
     if (argc != 3)
     {	
@@ -40,7 +51,7 @@ int main(int argc, char* argv[]){
 
     // define variables needed to save ppn of virtual page
     int xvpn;
-    int N = pow(2, addbit)/pgsize;
+    int N = x_to_the_n(2, addbit)/pgsize;
     int vpn[N];
     int count = 0;
     
