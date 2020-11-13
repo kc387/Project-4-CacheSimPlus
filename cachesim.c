@@ -87,18 +87,16 @@ int main (int argc, char* argv[]) {
 		// split current address into tag, index, and offset
 		int cA = currAddress;
 		int imask = x_to_the_n(2, 24) - 1; 
-		int mask = imask >> (num_bit_tag + num_bit_index);
-		int offset = cA & mask;
+		int omask = imask >> (num_bit_tag + num_bit_index);
+		int offset = cA & omask;
 
 		cA = currAddress;
 		int cAind = cA >> num_bit_offset;
-		mask = imask >> num_bit_index;
-		int index = cAind & mask;
+		int inmask = imask >> (num_bit_tag + num_bit_offset);
+		int index = cAind & inmask;
 		
 		cA = currAddress;
 		int tag = cA >> (num_bit_index + num_bit_offset);
-
-		printf("TIO: %d %d %d\n", tag, index, offset);
 
 		if (instruction_buffer[0]=='l'){    // If load
 			printf("load 0x%x ", currAddress);
