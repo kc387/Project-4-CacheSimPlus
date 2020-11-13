@@ -55,6 +55,8 @@ int main (int argc, char* argv[]) {
 	int num_bit_index = l2(sets);
 	int num_bit_tag = 24 - num_bit_offset - num_bit_index;
 
+	
+
 	// make cache
 	struct cache ***mycache = (cache***) malloc (sizeof(cache**) * sets);
 
@@ -95,6 +97,8 @@ int main (int argc, char* argv[]) {
 		
 		cA = currAddress;
 		int tag = cA >> (num_bit_index + num_bit_offset);
+
+		printf("TIO: %d %d %d\n", tag, index, offset);
 
 		if (instruction_buffer[0]=='l'){    // If load
 			printf("load 0x%x ", currAddress);
