@@ -54,12 +54,14 @@ int main (int argc, char* argv[]) {
 	int num_bit_offset = l2(blockSize);
 	int num_bit_index = l2(sets);
 	int num_bit_tag = 24 - num_bit_offset - num_bit_index;
-	
+
 	// make cache
 	struct cache ***mycache = (cache***) malloc (sizeof(cache**) * sets);
+
 	for(int i = 0; i < sets; i ++){
 		mycache[i] = (cache**) malloc (sizeof(cache*) * associativity);
 	}
+
 	for(int i = 0; i < sets; i ++){
 		for(int j = 0; j < associativity; j ++) {
 			mycache[i][j] = (cache*) malloc (sizeof(cache));
@@ -81,81 +83,177 @@ int main (int argc, char* argv[]) {
 		fscanf(myFile, "%d", &accessSize);
 
 		// split current address into tag, index, and offset
-		int offset = (currAddress << (num_bit_tag + num_bit_index)) >> (num_bit_tag + num_bit_index);
-		int index = (currAddress << num_bit_tag) >> (num_bit_tag + num_bit_offset);
-		int tag = currAddress >> (num_bit_index + num_bit_offset);
+		int cA = currAddress;
+		int imask = x_to_the_n(2, 24) - 1; 
+		int mask = imask >> (num_bit_tag + num_bit_index);
+		int offset = cA & mask;
+
+		cA = currAddress;
+		int cAind = cA >> num_bit_offset;
+		mask = imask >> num_bit_index;
+		int index = cAind & mask;
 		
+		cA = currAddress;
+		int tag = cA >> (num_bit_index + num_bit_offset);
+
 		if (instruction_buffer[0]=='l'){    // If load
-			printf("load 0x%x", currAddress);
+			printf("load 0x%x ", currAddress);
+			
 			int hit = 0;
+			int cmiss = 0;
             // check index & tag
 			for(int i = 0; i < associativity; i ++){
 				if(mycache[index][i] -> tag == tag){
-					printf("hit");
+					printf("hit ");
+					unsigned char* d = mycache[index][i] -> data;
 					for(int j = offset; j < (offset + accessSize); j ++){
-						printf("%02hhx", mycache[index][i] -> data[j]);
+						printf("%02hhx", d[j]);
 					}
 					lru ++;
 					mycache[index][i] -> time = lru;
 					hit = 1;
+					mycache[index][i] -> dirty = 0;
+					printf("\n");
 					break;
 				}
 			}
 			if (hit != 1) {
-				printf("miss");
+				printf("miss ");
+				for(int i = 0; i < associativity; i ++){
+					if(mycache[index][i] -> valid == 0){
+						mycache[index][i] -> valid = 1;
+						unsigned char* d = mycache[index][i] -> data;
+						unsigned char* buff = (unsigned char*) malloc(sizeof(unsigned char) * blockSize);
+						read_from_memory(buff, (currAddress-offset), blockSize);
+						for(int j = offset; j < (offset + accessSize); j ++){
+							printf("%02hhx", d[j]);
+						}
+						mycache[index][i] -> tag = tag;
+						lru ++;
+						mycache[index][i] -> time = lru;
+						printf("\n");
+						cmiss = 1;
+						mycache[index][i] -> dirty = 0;
+						break;
+					}
+				}
+				if (cmiss != 1){
+					int lowest;
+					int ilowest = 0;
+					for(int i = 0; i < associativity; i ++){
+						if(i == 0){
+							lowest = mycache[index][i] -> time;
+						}
+						else{
+							if(lowest > mycache[index][i] -> time){
+								lowest = mycache[index][i] -> time;
+								ilowest = i;
+							}
+						}	
+					}
+					
+					if(mycache[index][ilowest] -> dirty == 1){
+						unsigned char* buff = (unsigned char*) malloc(sizeof(unsigned char) * blockSize);
+						write_to_memory(buff, (currAddress-offset), blockSize);
+					}
+
+					unsigned char* buff = (unsigned char*) malloc(sizeof(unsigned char) * blockSize);
+					read_from_memory(buff, (currAddress-offset), blockSize);
+
+					for(int j = offset; j < (offset + accessSize); j ++){
+						printf("%02hhx", mycache[index][ilowest] -> data[j]);
+					}
+					printf("\n");
+					mycache[index][ilowest] -> tag = tag;
+					lru ++;
+					mycache[index][ilowest] -> time = lru;
+					mycache[index][ilowest] -> dirty = 0;
+				}
+			}
+			hit = 0;
+			cmiss = 0;
+		}
+        else {                              // Else store
+            // Buffer to store data to be stored
+            //char data_buffer[16];
+			unsigned char* data_buffer = (unsigned char*) malloc(sizeof(unsigned char) * blockSize);
+
+            // Read the data
+			for(int i = 0; i < accessSize; i ++){
+            	fscanf(myFile, "%02hhx", data_buffer + i);
+			}
+            printf("store 0x%x ", currAddress);
+			
+			int hit = 0;
+			int cmiss = 0;
+            // check index & tag
+			for(int i = 0; i < associativity; i ++){
+				// hit
+				if(mycache[index][i] -> tag == tag){
+					printf("hit");
+					for(int j = offset; j < (offset + accessSize); j ++){
+						mycache[index][i] -> data[j] = data_buffer[j-offset];
+					}
+					lru ++;
+					mycache[index][i] -> time = lru;
+					hit = 1;
+					mycache[index][i] -> dirty = 1;
+					printf("\n");
+					break;
+				}
+			}
+			if (hit != 1) {
+				printf("miss ");
 				for(int i = 0; i < associativity; i ++){
 					if(mycache[index][i] -> valid == 0){
 						mycache[index][i] -> valid = 1;
 						unsigned char* buff = (unsigned char*) malloc(sizeof(unsigned char) * blockSize);
 						read_from_memory(buff, (currAddress-offset), blockSize);
 						for(int j = offset; j < (offset + accessSize); j ++){
-							printf("%02hhx", mycache[index][i] -> data[j]);
+							mycache[index][i] -> data[j] = data_buffer[j-offset];
 						}
+						mycache[index][i] -> tag = tag;
 						lru ++;
 						mycache[index][i] -> time = lru;
+						printf("\n");
+						cmiss = 1;
+						mycache[index][i] -> dirty = 1;
 						break;
 					}
 				}
-				int lowest;
-				int ilowest = 0;
-				for(int i = 0; i < associativity; i ++){
-					if(i == 0){
-						lowest = mycache[index][i] -> time;
-					}
-					else{
-						if(lowest > mycache[index][i] -> time){
+				if (cmiss != 1){
+					int lowest;
+					int ilowest = 0;
+					for(int i = 0; i < associativity; i ++){
+						if(i == 0){
 							lowest = mycache[index][i] -> time;
-							ilowest = i;
 						}
-					}	
-				}
-				
-				if(mycache[index][ilowest] -> valid == 1){
+						else{
+							if(lowest > mycache[index][i] -> time){
+								lowest = mycache[index][i] -> time;
+								ilowest = i;
+							}
+						}	
+					}
+					
+					if(mycache[index][ilowest] -> dirty == 1){
+						unsigned char* buff = (unsigned char*) malloc(sizeof(unsigned char) * blockSize);
+						write_to_memory(buff, (currAddress-offset), blockSize);
+					}
 					unsigned char* buff = (unsigned char*) malloc(sizeof(unsigned char) * blockSize);
-					write_to_memory(buff, (currAddress-offset), blockSize);
+					read_from_memory(buff, (currAddress-offset), blockSize);
+					mycache[index][ilowest] -> tag = tag;
+					for(int j = offset; j < (offset + accessSize); j ++){
+						mycache[index][ilowest] -> data[j] = data_buffer[j-offset];
+					}
+					printf("\n");
+					lru ++;
+					mycache[index][ilowest] -> time = lru;
+					mycache[index][ilowest] -> dirty = 1;
 				}
-
-				unsigned char* buff = (unsigned char*) malloc(sizeof(unsigned char) * blockSize);
-				read_from_memory(buff, (currAddress-offset), blockSize);
-
-				for(int j = offset; j < (offset + accessSize); j ++){
-					printf("%02hhx", mycache[index][ilowest] -> data[j]);
-				}
-
-				lru ++;
-				mycache[index][ilowest] -> time = lru;
 			}
-		}
-        else {                              // Else store
-            // Buffer to store data to be stored
-            //char data_buffer[16];
-			char data_buffer[16];
-
-            // Read the data
-            fscanf(myFile, "%s", &data_buffer);
-
-            // Print the store line in the same format as trace file
-            printf("store 0x%x %d %s\n", currAddress, accessSize, data_buffer);
+			hit = 0;
+			cmiss = 0;
 		}
 	}
 
