@@ -199,7 +199,6 @@ int main (int argc, char* argv[]) {
 					printf("hit");
 					for(int j = offset; j < (offset + accessSize); j ++){
 						mycache[index][i] -> data[j] = data_buffer[j-offset];
-						printf("%02hhx", mycache[index][i] -> data[j]);
 					}
 					lru ++;
 					mycache[index][i] -> time = lru;
@@ -218,7 +217,6 @@ int main (int argc, char* argv[]) {
 						read_from_memory(buff, (currAddress-offset), blockSize);
 						for(int j = offset; j < (offset + accessSize); j ++){
 							mycache[index][i] -> data[j] = data_buffer[j-offset];
-							printf("%02hhx", mycache[index][i] -> data[j]);
 						}
 						mycache[index][i] -> tag = tag;
 						lru ++;
@@ -253,7 +251,6 @@ int main (int argc, char* argv[]) {
 					mycache[index][ilowest] -> tag = tag;
 					for(int j = offset; j < (offset + accessSize); j ++){
 						mycache[index][ilowest] -> data[j] = data_buffer[j-offset];
-						printf("%02hhx", mycache[index][ilowest] -> data[j]);
 					}
 					printf("\n");
 					lru ++;
