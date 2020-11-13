@@ -158,8 +158,8 @@ int main (int argc, char* argv[]) {
 					}
 					
 					if(mycache[index][ilowest] -> dirty == 1){
-						unsigned char* buff = (unsigned char*) malloc(sizeof(unsigned char) * blockSize);
-						write_to_memory(buff, (currAddress-offset), blockSize);
+						int tagind = (currAddress >> offset) << offset;
+						write_to_memory(mycache[index][ilowest] -> data, tagind, blockSize);
 					}
 
 					unsigned char* buff = (unsigned char*) malloc(sizeof(unsigned char) * blockSize);
@@ -187,6 +187,7 @@ int main (int argc, char* argv[]) {
 			for(int i = 0; i < accessSize; i ++){
             	fscanf(myFile, "%02hhx", data_buffer + i);
 			}
+
             printf("store 0x%x ", currAddress);
 			
 			int hit = 0;
@@ -242,8 +243,8 @@ int main (int argc, char* argv[]) {
 					}
 					
 					if(mycache[index][ilowest] -> dirty == 1){
-						unsigned char* buff = (unsigned char*) malloc(sizeof(unsigned char) * blockSize);
-						write_to_memory(buff, (currAddress-offset), blockSize);
+						int tagind = (currAddress >> offset) << offset;
+						write_to_memory(mycache[index][ilowest] -> data, tagind, blockSize);
 					}
 					unsigned char* buff = (unsigned char*) malloc(sizeof(unsigned char) * blockSize);
 					read_from_memory(buff, (currAddress-offset), blockSize);
