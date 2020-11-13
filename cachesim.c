@@ -130,7 +130,6 @@ int main (int argc, char* argv[]) {
 						unsigned char* d = mycache[index][i] -> data;
 						unsigned char* buff = (unsigned char*) malloc(sizeof(unsigned char) * blockSize);
 						read_from_memory(buff, (currAddress-offset), blockSize);
-						mycache[index][i] -> data = buff;
 						for(int j = offset; j < (offset + accessSize); j ++){
 							printf("%02hhx", d[j]);
 						}
@@ -165,7 +164,7 @@ int main (int argc, char* argv[]) {
 
 					unsigned char* buff = (unsigned char*) malloc(sizeof(unsigned char) * blockSize);
 					read_from_memory(buff, (currAddress-offset), blockSize);
-					mycache[index][ilowest] -> data = buff;
+
 					for(int j = offset; j < (offset + accessSize); j ++){
 						printf("%02hhx", mycache[index][ilowest] -> data[j]);
 					}
