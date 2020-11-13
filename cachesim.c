@@ -98,6 +98,8 @@ int main (int argc, char* argv[]) {
 		cA = currAddress;
 		int tag = cA >> (num_bit_index + num_bit_offset);
 
+		//printf("TI: %d %d\n", tag, index);
+
 		if (instruction_buffer[0]=='l'){    // If load
 			printf("load 0x%x ", currAddress);
 			
