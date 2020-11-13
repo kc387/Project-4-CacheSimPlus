@@ -1,24 +1,22 @@
-44c44
-< load 0x895 hit 05
+55,56c55,56
+< load 0x94 miss 06
+< load 0x895 miss 05
 ---
-> load 0x895 miss 05
-47c47
-< load 0x2098 miss 02
----
-> load 0x2098 hit 02
-58,59c58,59
+> load 0x94 miss 00
+> load 0x895 miss 00
+58,60c58,60
 < load 0x1897 miss 03
 < load 0x2098 miss 02
+< load 0x2899 miss 01
 ---
-> load 0x1897 hit 03
-> load 0x2098 hit 02
-66,69c66,69
-< Total read calls: 22
+> load 0x1897 miss 00
+> load 0x2098 miss 00
+> load 0x2899 miss 00
+67c67
 < Total write calls: 9
-< Total bytes read: 1408
+---
+> Total write calls: 2
+69c69
 < Total bytes written: 576
 ---
-> Total read calls: 20
-> Total write calls: 2
-> Total bytes read: 1280
 > Total bytes written: 128

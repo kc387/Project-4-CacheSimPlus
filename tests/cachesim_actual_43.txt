@@ -75,28 +75,28 @@ store 0x3800 miss
 load 0x3800 hit 11
 store 0x3c00 miss 
 load 0x3c00 hit 1c
-load 0x0 miss 1c
-load 0x400 hit b0
-load 0x800 hit 0f
-load 0xc00 hit 91
-load 0x1000 hit f6
-load 0x1400 hit 8e
-load 0x1800 hit 55
-load 0x1c00 hit f0
-load 0x2000 miss 1c
-load 0x2400 miss 1c
-load 0x2800 miss 1c
-load 0x2c00 miss 1c
-load 0x3000 miss 1c
-load 0x3400 miss 1c
-load 0x3800 miss 1c
+load 0x0 miss 37
+load 0x400 miss cf
+load 0x800 miss 52
+load 0xc00 miss 1f
+load 0x1000 miss cc
+load 0x1400 miss c1
+load 0x1800 miss 11
+load 0x1c00 miss 1c
+load 0x2000 miss 37
+load 0x2400 miss cf
+load 0x2800 miss 52
+load 0x2c00 miss 1f
+load 0x3000 miss cc
+load 0x3400 miss c1
+load 0x3800 miss 11
 load 0x3c00 miss 1c
 
 ===
 
 Memory statistics:
 
-Total read calls: 25
+Total read calls: 32
 Total write calls: 0
-Total bytes read: 1600
+Total bytes read: 2048
 Total bytes written: 0

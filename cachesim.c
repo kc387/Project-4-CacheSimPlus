@@ -75,9 +75,10 @@ int main (int argc, char* argv[]) {
 		}
 	}
 
+	int lru = 0;
+
     // Keep reading the instruction until end of file
 	while(fscanf(myFile,"%s", &instruction_buffer)!=EOF) {
-		int lru = 0;
 		int currAddress, accessSize;
 
         // Read the address and access size info

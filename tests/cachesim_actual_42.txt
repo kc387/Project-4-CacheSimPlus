@@ -35,21 +35,21 @@ store 0x1800 miss
 load 0x1800 hit 3a
 store 0x1c00 miss 
 load 0x1c00 hit b6
-load 0x0 miss b6
-load 0x400 hit 11
-load 0x800 hit 31
-load 0xc00 hit a4
-load 0x1000 miss b6
-load 0x1400 miss b6
-load 0x1800 miss b6
+load 0x0 miss 5a
+load 0x400 miss 6f
+load 0x800 miss 3a
+load 0xc00 miss b6
+load 0x1000 miss 5a
+load 0x1400 miss 6f
+load 0x1800 miss 3a
 load 0x1c00 miss b6
 store 0x0 miss 
 load 0x0 hit 49
-store 0x400 hit
+store 0x400 miss 
 load 0x400 hit b0
-store 0x800 hit
+store 0x800 miss 
 load 0x800 hit 0f
-store 0xc00 hit
+store 0xc00 miss 
 load 0xc00 hit 91
 store 0x1000 miss 
 load 0x1000 hit f6
@@ -75,28 +75,28 @@ store 0x3800 miss
 load 0x3800 hit 11
 store 0x3c00 miss 
 load 0x3c00 hit 1c
-load 0x0 miss 1c
-load 0x400 hit b0
-load 0x800 hit 0f
-load 0xc00 hit 91
-load 0x1000 miss 1c
-load 0x1400 miss 1c
-load 0x1800 miss 1c
+load 0x0 miss cc
+load 0x400 miss c1
+load 0x800 miss 11
+load 0xc00 miss 1c
+load 0x1000 miss cc
+load 0x1400 miss c1
+load 0x1800 miss 11
 load 0x1c00 miss 1c
-load 0x2000 miss 1c
-load 0x2400 miss 1c
-load 0x2800 miss 1c
+load 0x2000 miss cc
+load 0x2400 miss c1
+load 0x2800 miss 11
 load 0x2c00 miss 1c
-load 0x3000 miss 1c
-load 0x3400 miss 1c
-load 0x3800 miss 1c
+load 0x3000 miss cc
+load 0x3400 miss c1
+load 0x3800 miss 11
 load 0x3c00 miss 1c
 
 ===
 
 Memory statistics:
 
-Total read calls: 39
+Total read calls: 48
 Total write calls: 0
-Total bytes read: 2496
+Total bytes read: 3072
 Total bytes written: 0

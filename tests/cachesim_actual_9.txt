@@ -41,10 +41,10 @@ load 0x10cd hit 09
 load 0x110e hit 08
 load 0x114f hit 07
 load 0x94 hit 06
-load 0x895 miss 05
+load 0x895 hit 05
 load 0x1096 hit 04
 load 0x1897 hit 03
-load 0x2098 hit 02
+load 0x2098 miss 02
 load 0x2899 miss 01
 load 0x100a hit 0c
 load 0x104b hit 0b
@@ -52,18 +52,18 @@ load 0x108c hit 0a
 load 0x10cd hit 09
 load 0x110e hit 08
 load 0x114f hit 07
-load 0x94 miss 06
-load 0x895 miss 05
+load 0x94 miss 00
+load 0x895 miss 00
 load 0x1096 hit 04
-load 0x1897 hit 03
-load 0x2098 hit 02
-load 0x2899 miss 01
+load 0x1897 miss 00
+load 0x2098 miss 00
+load 0x2899 miss 00
 
 ===
 
 Memory statistics:
 
-Total read calls: 20
+Total read calls: 22
 Total write calls: 2
-Total bytes read: 1280
+Total bytes read: 1408
 Total bytes written: 128

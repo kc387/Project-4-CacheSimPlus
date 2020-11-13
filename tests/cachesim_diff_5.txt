@@ -1,24 +1,8 @@
-31c31
-< load 0x108c hit 00
----
-> load 0x108c miss 00
-35,36c35,36
-< load 0x94 miss 00
-< load 0x895 miss 00
----
-> load 0x94 hit 00
-> load 0x895 hit 00
-38c38
-< load 0x1897 miss 00
----
-> load 0x1897 hit 00
-46,49c46,49
-< Total read calls: 20
+47c47
 < Total write calls: 7
-< Total bytes read: 1280
+---
+> Total write calls: 0
+49c49
 < Total bytes written: 448
 ---
-> Total read calls: 18
-> Total write calls: 0
-> Total bytes read: 1152
 > Total bytes written: 0

@@ -28,14 +28,14 @@ load 0x2098 miss 00
 load 0x2899 miss 00
 load 0x100a hit 00
 load 0x104b hit 00
-load 0x108c miss 00
+load 0x108c hit 00
 load 0x10cd hit 00
 load 0x110e hit 00
 load 0x114f hit 00
-load 0x94 hit 00
-load 0x895 hit 00
+load 0x94 miss 00
+load 0x895 miss 00
 load 0x1096 hit 00
-load 0x1897 hit 00
+load 0x1897 miss 00
 load 0x2098 miss 00
 load 0x2899 miss 00
 
@@ -43,7 +43,7 @@ load 0x2899 miss 00
 
 Memory statistics:
 
-Total read calls: 18
+Total read calls: 20
 Total write calls: 0
-Total bytes read: 1152
+Total bytes read: 1280
 Total bytes written: 0
