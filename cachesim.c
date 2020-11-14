@@ -130,7 +130,8 @@ int main (int argc, char* argv[]) {
 						unsigned char* d = mycache[index][i] -> data;
 						unsigned char* buff = (unsigned char*) malloc(sizeof(unsigned char) * blockSize);
 						read_from_memory(buff, (currAddress-offset), blockSize);
-						//mycache[index][i] -> data = buff;
+						mycache[index][i] -> data = buff;
+
 						for(int j = offset; j < (offset + accessSize); j ++){
 							printf("%02hhx", d[j]);
 						}
@@ -167,7 +168,7 @@ int main (int argc, char* argv[]) {
 
 					unsigned char* buff = (unsigned char*) malloc(sizeof(unsigned char) * blockSize);
 					read_from_memory(buff, (currAddress-offset), blockSize);
-					//mycache[index][ilowest] -> data = buff;
+					mycache[index][ilowest] -> data = buff;
 
 					for(int j = offset; j < (offset + accessSize); j ++){
 						printf("%02hhx", mycache[index][ilowest] -> data[j]);
@@ -221,7 +222,8 @@ int main (int argc, char* argv[]) {
 						mycache[index][i] -> valid = 1;
 						unsigned char* buff = (unsigned char*) malloc(sizeof(unsigned char) * blockSize);
 						read_from_memory(buff, (currAddress-offset), blockSize);
-						//mycache[index][i] -> data = buff;
+						mycache[index][i] -> data = buff;
+
 						mycache[index][i] -> tag = tag;
 						lru ++;
 						mycache[index][i] -> time = lru;
@@ -259,7 +261,7 @@ int main (int argc, char* argv[]) {
 					}
 					unsigned char* buff = (unsigned char*) malloc(sizeof(unsigned char) * blockSize);
 					read_from_memory(buff, (currAddress-offset), blockSize);
-					//mycache[index][ilowest] -> data = buff;
+					mycache[index][ilowest] -> data = buff;
 					mycache[index][ilowest] -> tag = tag;
 					int k = 0;
 					for(int j = offset; j < (offset + accessSize); j ++){
