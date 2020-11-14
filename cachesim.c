@@ -88,6 +88,7 @@ int main (int argc, char* argv[]) {
 		// split current address into tag, index, and offset
 		int cA = currAddress;
 		int imask = x_to_the_n(2, 24) - 1; 
+
 		int omask = imask >> (num_bit_tag + num_bit_index);
 		int offset = cA & omask;
 
@@ -98,7 +99,7 @@ int main (int argc, char* argv[]) {
 		
 		cA = currAddress;
 		int tag = cA >> (num_bit_index + num_bit_offset);
-
+ 
 		//printf("TI: %d %d\n", tag, index);
 
 		if (instruction_buffer[0]=='l'){    // If load
@@ -169,7 +170,7 @@ int main (int argc, char* argv[]) {
 					unsigned char* buff = (unsigned char*) malloc(sizeof(unsigned char) * blockSize);
 					read_from_memory(buff, (currAddress-offset), blockSize);
 					mycache[index][ilowest] -> data = buff;
-
+					printf("delete thingy miss\n");
 					for(int j = offset; j < (offset + accessSize); j ++){
 						printf("%02hhx", mycache[index][ilowest] -> data[j]);
 					}
