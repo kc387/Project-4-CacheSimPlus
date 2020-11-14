@@ -148,7 +148,7 @@ int main (int argc, char* argv[]) {
             //printf("I: %d", index);
 
             if (instruction_buffer[0]=='l'){    // If load
-                printf("load 0x%x ", currAddress);
+                printf("load 0x%x ", v_address);
                 
                 int hit = 0;
                 int cmiss = 0;
@@ -238,7 +238,7 @@ int main (int argc, char* argv[]) {
                     fscanf(myFile, "%02hhx", data_buffer + i);
                 }
 
-                printf("store 0x%x ", currAddress);
+                printf("store 0x%x ", v_address);
                 
                 int hit = 0;
                 int cmiss = 0;
