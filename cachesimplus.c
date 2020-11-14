@@ -114,14 +114,20 @@ int main (int argc, char* argv[]) {
 
         // take index of v_address and find corresponding ppn & convert ppn into binary
         int ppn = vpn[vindex];
+        fclose(pg_tbl_form);
 
         // add ppn and offset together for binary value and then convert to hex & print
         if(ppn == -1){
             printf("PAGEFAULT\n");
+            if(instruction_buffer[0] != 'l'){
+                int da;
+                fscanf(myFile, "%x", &da);
+            }
         }
         else{
             int ppnfull = ppn << pgoffset;
             int currAddress = ppnfull + voffset;
+            printf("phys: %x\n", currAddress);
         
 
             // split current address into tag, index, and offset
