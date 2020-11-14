@@ -127,7 +127,7 @@ int main (int argc, char* argv[]) {
         else{
             int ppnfull = ppn << pgoffset;
             int currAddress = ppnfull + voffset;
-            printf("phys: %x\n", currAddress);
+            //printf("phys: %x\n", currAddress);
         
 
             // split current address into tag, index, and offset
