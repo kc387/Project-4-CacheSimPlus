@@ -117,8 +117,7 @@ int main (int argc, char* argv[]) {
 
         // add ppn and offset together for binary value and then convert to hex & print
         if(ppn == -1){
-            char z[100] = "PAGEFAULT";
-            printf("%s\n", z);
+            printf("PAGEFAULT\n");
         }
         else{
             int ppnfull = ppn << pgoffset;
