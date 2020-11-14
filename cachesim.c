@@ -54,6 +54,7 @@ int main (int argc, char* argv[]) {
 	int num_bit_offset = l2(blockSize);
 	int num_bit_index = l2(sets);
 	int num_bit_tag = 24 - num_bit_offset - num_bit_index;
+	//printf("TIO bits: %d %d %d\n", num_bit_tag, num_bit_index, num_bit_offset);
 
 	
 
@@ -100,7 +101,7 @@ int main (int argc, char* argv[]) {
 		cA = currAddress;
 		int tag = cA >> (num_bit_index + num_bit_offset);
  
-		//printf("TI: %d %d\n", tag, index);
+		//printf("I: %d", index);
 
 		if (instruction_buffer[0]=='l'){    // If load
 			printf("load 0x%x ", currAddress);
@@ -118,7 +119,6 @@ int main (int argc, char* argv[]) {
 					lru ++;
 					mycache[index][i] -> time = lru;
 					hit = 1;
-					mycache[index][i] -> dirty = 0;
 					printf("\n");
 					break;
 				}
@@ -128,11 +128,10 @@ int main (int argc, char* argv[]) {
 				for(int i = 0; i < associativity; i ++){
 					if(mycache[index][i] -> valid == 0){
 						mycache[index][i] -> valid = 1;
-						unsigned char* d = mycache[index][i] -> data;
 						unsigned char* buff = (unsigned char*) malloc(sizeof(unsigned char) * blockSize);
 						read_from_memory(buff, (currAddress-offset), blockSize);
 						mycache[index][i] -> data = buff;
-
+						unsigned char* d = mycache[index][i] -> data;
 						for(int j = offset; j < (offset + accessSize); j ++){
 							printf("%02hhx", d[j]);
 						}
@@ -146,33 +145,34 @@ int main (int argc, char* argv[]) {
 					}
 				}
 				if (cmiss != 1){
-					int lowest;
+					int lowest = mycache[index][0] -> time;
 					int ilowest = 0;
 					for(int i = 0; i < associativity; i ++){
-						if(i == 0){
+						if(mycache[index][i] -> time < lowest){
 							lowest = mycache[index][i] -> time;
-						}
-						else{
-							if(lowest > mycache[index][i] -> time){
-								lowest = mycache[index][i] -> time;
-								ilowest = i;
-							}
+							ilowest = i;
 						}	
 					}
+					//printf("ilowest: %d", ilowest);
 					
+					//("d: %d", mycache[index][ilowest] -> dirty);
 					if(mycache[index][ilowest] -> dirty == 1){
+						//printf("dirtyisone");
 						int tg = mycache[index][ilowest] -> tag << (24 - num_bit_tag);
 						int in = index << num_bit_offset;
 						int tagind = tg + in;
 						write_to_memory(mycache[index][ilowest] -> data, tagind, blockSize);
+						//printf("writemem");
 					}
-
 					unsigned char* buff = (unsigned char*) malloc(sizeof(unsigned char) * blockSize);
 					read_from_memory(buff, (currAddress-offset), blockSize);
+					// for(int j = offset; j < (offset + accessSize); j ++){
+					// 	printf("buff %02hhx", buff[j]);
+					// }
 					mycache[index][ilowest] -> data = buff;
-					printf("delete thingy miss\n");
+					unsigned char* d = mycache[index][ilowest] -> data;
 					for(int j = offset; j < (offset + accessSize); j ++){
-						printf("%02hhx", mycache[index][ilowest] -> data[j]);
+						printf("%02hhx", d[j]);
 					}
 					printf("\n");
 					mycache[index][ilowest] -> tag = tag;
@@ -212,6 +212,7 @@ int main (int argc, char* argv[]) {
 					mycache[index][i] -> time = lru;
 					hit = 1;
 					mycache[index][i] -> dirty = 1;
+					//printf("dirty %d", mycache[index][i] -> dirty);
 					printf("\n");
 					break;
 				}
@@ -223,6 +224,9 @@ int main (int argc, char* argv[]) {
 						mycache[index][i] -> valid = 1;
 						unsigned char* buff = (unsigned char*) malloc(sizeof(unsigned char) * blockSize);
 						read_from_memory(buff, (currAddress-offset), blockSize);
+						// for(int j = offset; j < (offset + accessSize); j ++){
+						// 	printf("buff %02hhx", buff[j]);
+						// }
 						mycache[index][i] -> data = buff;
 
 						mycache[index][i] -> tag = tag;
@@ -231,6 +235,7 @@ int main (int argc, char* argv[]) {
 						printf("\n");
 						cmiss = 1;
 						mycache[index][i] -> dirty = 1;
+						//printf("dirty %d", mycache[index][i] -> dirty);
 						int k = 0;
 						for(int j = offset; j < (offset + accessSize); j ++){
 							mycache[index][i] -> data[j] = data_buffer[k];
@@ -254,25 +259,38 @@ int main (int argc, char* argv[]) {
 						}	
 					}
 					
+					//printf("d: %d", mycache[index][ilowest] -> dirty);
 					if(mycache[index][ilowest] -> dirty == 1){
+						//printf("dirtyisone");
 						int tg = mycache[index][ilowest] -> tag << (24 - num_bit_tag);
 						int in = index << num_bit_offset;
 						int tagind = tg + in;
 						write_to_memory(mycache[index][ilowest] -> data, tagind, blockSize);
+						unsigned char* d = mycache[index][ilowest] -> data;
+						//printf("writemem");
 					}
 					unsigned char* buff = (unsigned char*) malloc(sizeof(unsigned char) * blockSize);
 					read_from_memory(buff, (currAddress-offset), blockSize);
+					// for(int j = offset; j < (offset + accessSize); j ++){
+					// 	printf("buff %02hhx", buff[j]);
+					// }
 					mycache[index][ilowest] -> data = buff;
 					mycache[index][ilowest] -> tag = tag;
 					int k = 0;
 					for(int j = offset; j < (offset + accessSize); j ++){
 						mycache[index][ilowest] -> data[j] = data_buffer[k];
+						//printf("data: %02hhx", mycache[index][ilowest] -> data[j]);
 						k ++;
 					}
 					printf("\n");
 					lru ++;
 					mycache[index][ilowest] -> time = lru;
 					mycache[index][ilowest] -> dirty = 1;
+					//printf("dirty %d", mycache[index][ilowest] -> dirty);
+					/*unsigned char* d = mycache[index][ilowest] -> data;
+					for(int j = offset; j < (offset + accessSize); j ++){
+						printf("data: %02hhx\n", d[j]);
+					}*/
 				}
 			}
 			hit = 0;
